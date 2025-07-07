@@ -1,0 +1,31 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Force HTTPS (uncomment in production)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Prevent access to sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^(config|auth)/.*\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Allow direct access only to specific PHP files
+<FilesMatch "^(index|dashboard|login|register|download|upload|delete_file|get_teachers|get_courses|error)\.php$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# Custom error pages
+ErrorDocument 403 /error.php?message=Access%20Denied
+ErrorDocument 404 /error.php?message=Page%20Not%20Found
+ErrorDocument 500 /error.php?message=Server%20Error
